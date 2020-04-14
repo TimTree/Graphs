@@ -12,7 +12,7 @@ For example, in this diagram and the sample input, 3 is a child of 1 and 2, and 
 ```
  10
  /
-1   2   4  11
+100 2   4  11
  \ /   / \ /
   3   5   8
    \ / \   \

@@ -130,7 +130,7 @@ class Graph:
         '''
 
 
-    def bfs(self, starting_vertex, destination_vertex):
+    def bfs(self, starting_vertex):
         """
         Return a list containing the shortest path from
         starting_vertex to destination_vertex in
@@ -158,9 +158,7 @@ class Graph:
                     qq.enqueue(new_path)
                     combos.append(new_path)
         
-        for combo in combos:
-            if destination_vertex in combo:
-                return combo
+        return combos
 
     def dfs(self, starting_vertex, destination_vertex):
         """
