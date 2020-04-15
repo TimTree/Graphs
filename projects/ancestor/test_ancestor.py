@@ -1,5 +1,6 @@
 import unittest
 from ancestor import earliest_ancestor
+import random
 
 class Test(unittest.TestCase):
 
@@ -14,6 +15,8 @@ class Test(unittest.TestCase):
     '''
     def test_earliest_ancestor(self):
         test_ancestors = [(1, 3), (2, 3), (3, 6), (5, 6), (5, 7), (4, 5), (4, 8), (8, 9), (11, 8), (10, 1)]
+        random.shuffle(test_ancestors)
+        print(test_ancestors)
         self.assertEqual(earliest_ancestor(test_ancestors, 1), 10)
         self.assertEqual(earliest_ancestor(test_ancestors, 2), -1)
         self.assertEqual(earliest_ancestor(test_ancestors, 3), 10)

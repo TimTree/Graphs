@@ -1,3 +1,6 @@
+import random
+from util import Stack, Queue
+
 class User:
     def __init__(self, name):
         self.name = name
@@ -19,6 +22,9 @@ class SocialGraph:
         else:
             self.friendships[user_id].add(friend_id)
             self.friendships[friend_id].add(user_id)
+
+    def get_friendships(self, user_id):
+            return self.friendships[user_id]
 
     def add_user(self, name):
         """
@@ -45,8 +51,24 @@ class SocialGraph:
         # !!!! IMPLEMENT ME
 
         # Add users
+        # Use add_user num_users times
+        for i in range(0, num_users):
+            self.add_user(f"User {i+1}")
 
-        # Create friendships
+        # Generate all friendship combinations
+        # Avoid dupes by making sure first number is smaller than second
+        possible_friendships = []
+        for user_id in self.users:
+            for friend_id in range(user_id+1, self.last_id+1):
+                possible_friendships.append((user_id, friend_id))
+        # Shuffle all possible friendships
+        random.shuffle(possible_friendships)
+
+        # print(possible_friendships)
+        # Create for first X pairs x is total // 2
+        for i in range(num_users * avg_friendships // 2):
+            friendship = possible_friendships[i]
+            self.add_friendship(friendship[0], friendship[1])
 
     def get_all_social_paths(self, user_id):
         """
@@ -59,6 +81,36 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+        
+        # Create a q and enqueue starting vertex
+        qq = Queue()
+        qq.enqueue([user_id])
+        # Create a set of traversed vertices
+        visited2 = set()
+        traversed_nums = set()
+        combos = []
+        # While queue is not empty:
+        while qq.size() > 0:
+            # dequeue/pop the first vertex
+            path = qq.dequeue()
+            # if not visited
+            if path[-1] not in visited2:
+                # print(path[-1])
+                # mark as visited
+                visited2.add(path[-1])
+                # enqueue all neighbors
+                for next_vert in self.get_friendships(path[-1]):
+                    if next_vert not in visited2 and next_vert not in traversed_nums:
+                        new_path = list(path)
+                        new_path.append(next_vert)
+                        traversed_nums.add(next_vert)
+                        combos.append(new_path)
+                        qq.enqueue(new_path)
+
+        visited[user_id] = [user_id]
+        for combo in combos:
+            visited[combo[-1]] = combo
+
         return visited
 
 
